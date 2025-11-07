@@ -47,10 +47,10 @@ async function main() {
       ]
     }),
     new Module({
-      moduleID: 'mod0002',
       title: 'Cybersecurity Training Lesson 2',
       description: ' Cybersecurity Authentication',
       materialURL: 'https://example.com/cybersecurity202URL',
+      moduleID: 'mod0002',
       moduleQuestions: [
         {
           question: 'What is multi-factor authentication?',
@@ -70,7 +70,7 @@ async function main() {
     const users =[ new User({
       userName: 'sydneyj',
       email: 'sydney@example.com',
-      password: 'test1234!', // Will be hashed automatically by pre('save')
+      password: 'test1234!', // Will be hashed by pre('save')
       progressTracker: [{ moduleID: 'mod0001', completionStatus:'completed', attempts:1, lastQuizScore:85, lastCompleteDate: new Date()}, {moduleID: 'mod0002', completionStatus:'in_progress', attempts:1, lastQuizScore:50}],
       certificates: [{moduleID: 'mod0001'}],
       quizScores: [{ moduleID: 'mod0001', quizScore: 85, attemptNum:1 }, { moduleID: 'mod0002', quizScore: 50, attemptNum:1 }]
@@ -91,7 +91,6 @@ async function main() {
       userRef: users[0]._id,
       userID: users[0].userID,
       action: 'module_completed',
-      moduleID: 'mod0001',
       timestamp: new Date(),
       details: {score: 85}
     });
