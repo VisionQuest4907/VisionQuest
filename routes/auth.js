@@ -12,7 +12,7 @@ const LOCKOUT_MINUTES = 5;
 function createToken(user) {
   return jwt.sign(
     {
-      sub: user._id.toString(),
+      sub: user.userID,
       role: user.role,
     },
     JWT_SECRET,
