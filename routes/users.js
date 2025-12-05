@@ -1,8 +1,8 @@
-import express from 'express';
-import { requireAuth, requireRole } from '../middleware/auth.js';
-import User from '../models/User.js';
-
+const express = require('express');
+const { requireAuth, requireRole } = require('../middleware/auth');
+const User = require('../models/User');
 const router = express.Router();
+
 router.get('/me', requireAuth, async (req, res, next) => {
   try {
     res.json(req.user);
@@ -16,8 +16,8 @@ router.get('/', requireAuth, requireRole('admin'), async (req, res, next) => {
     const users = await User.find().select('-password');
     res.json(users);
   } catch (err) {
-    next(err);
+    next (err);
   }
 });
 
-export default router;
+module.exports = router;
