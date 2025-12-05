@@ -1,21 +1,25 @@
-//log errors on server side and show generic message on webpage
+const { NODE_ENV } = require('../config/env');
 
-import { NODE_ENV } from '../config/env.js';
-export const notFoundHandler = (req, res, next) => {
-  res.status(404).json({ message: 'Resource Not Found' });
+const notFoundHandler = (req, res, next) => {
+  res.status(404).json({ message: 'Not Found' });
 };
 
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
   console.error('Error:', err);
   const status = err.status || 500;
   const response = {
     message:
-      status === 500 ? 'Internal Server Error' : err.message || 'Error Occurred',
+      status === 500 ? 'Internal Server Error' : err.message || 'Error',
   };
 
   if (NODE_ENV === 'development' && status === 500) {
     response.stack = err.stack;
   }
 
-  res.status(status).json(response);
+  res.status(status).json(reponse);
+};
+
+module.exports = {
+  notFoundHandler,
+  errorHandler,
 };
