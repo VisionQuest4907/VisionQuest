@@ -1,27 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import loginback from './assets/loginback.png'
-import './LoginPage.css'
+import './LoginPage.css';
+import {useNavigate} from 'react-router-dom';
+import type {FormEvent} from 'react';
 
 function LoginPage() {
+  const goTo = useNavigate();
+  //test function to get to dashboard until security funcs
+  function toDashTest(e: FormEvent<HTMLFormElement>){
+    e.preventDefault();
+    goTo("/dashboard");
+  }
   return  (
-    <div>
+    <div className="login-pg">
       <h1>LOGIN</h1>
-      <div className="card">
-        <form>
-	  <label for="uname">Username</label><br></br>
-	  <input type="text" id="uname" name="uname"></input><br></br>
-	  <label for="pwd">Password</label><br></br>
-	  <input type="password" id="pwd" name="pwd"></input><br></br>
+      <div>
+        <form onSubmit={toDashTest}>
+	        <label htmlFor="uname">Username</label><br></br>
+	        <input type="text" id="uname" name="uname"></input><br></br>
+	        <label htmlFor="pwd">Password</label><br></br>
+	        <input type="password" id="pwd" name="pwd"></input><br></br>
           <input type="submit" value="Submit"></input>
-	</form>
+        </form>
       </div>
       <div className="other">
           
       </div>
     </div>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;
