@@ -1,11 +1,10 @@
-import React from 'react';
 import { Link, Outlet } from 'react-router-dom';
 
 export default function PageMap() {
     return(
         <>
             <nav>
-                <Link to="/">Login</Link>
+                <Link to="/"></Link>
             </nav>
             <Outlet />
         </>
