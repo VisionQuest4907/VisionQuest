@@ -1,6 +1,7 @@
 import './dashboard.css';
-import {useNavigate, Link} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import type {MouseEvent} from 'react';
+import ModOne from "./assets/moduleone.png";
 
 function Dashboard() {
     const goTo = useNavigate();
@@ -17,15 +18,25 @@ function Dashboard() {
         e.preventDefault();
         goTo("/dashboard");
     }
+    function toDownload(e:MouseEvent<HTMLAnchorElement>){
+        e.preventDefault();
+        goTo("/download");
+    }
+    function toModOne(e:MouseEvent<HTMLImageElement>){
+        e.preventDefault();
+        goTo("/moduleone/expectations");
+    }
     return  (
         <div className="dash-pg">
             <nav className="dash-nav">
                 <a href="/dashboard" onClick={toDash}>Dashboard</a>
-                <a href="#">Downloadables</a>
+                <a href="/download" onClick={toDownload}>Downloadables</a>
                 <a href="/certview" onClick={toCertView}>Certificates</a>
                 <a href="/settings" onClick={toSetting}>Settings</a>
                 <a href="#">Profile</a>
             </nav>
+            <img src={ModOne} className="mod-pic" onClick={toModOne}></img>
+
         </div>
     
     );
