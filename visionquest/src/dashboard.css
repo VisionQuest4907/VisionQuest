@@ -45,3 +45,9 @@
 .dash-nav a:hover{
     background-color: darkslateblue;
 }
+
+.mod-pic{
+    height: fit-content;
+    padding-top: 60px;
+    cursor: pointer;
+}
