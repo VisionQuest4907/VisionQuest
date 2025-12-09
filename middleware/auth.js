@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/user');
+const User = require('../models/users');
 const { JWT_SECRET } = require('../config/env');
 
 const requireAuth = async (req, res, next) => {
@@ -25,7 +25,7 @@ const requireAuth = async (req, res, next) => {
     req.user = user;
     next();
   } catch (err) {
-    console.error('Auth Error:' err.message);
+    console.error('Auth Error:', err.message);
     return res.status(401).json({ message: 'Invalid Token' });
   }
 };

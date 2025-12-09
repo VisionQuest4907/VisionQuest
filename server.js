@@ -15,6 +15,22 @@ app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
 app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.get("/health", (req, res) => {
+  res.json({
+    status: "OK",
+    timestamp: new Date().toISOString(),
+    message: "Server is running"
+  });
+});
+
+app.get("/ready", (req, res) => {
+  const dbState = mongoose.connection.readyState;
+  res.json({
+    status: dbState === 1 ? "READY" : "NOT_READY",
+    database: dbState === 1 ? "connected" : "not connected",
+    timestamp: new Date().toISOString()
+  });
+});
 app.use(notFoundHandler);
 app.use(errorHandler);
 
