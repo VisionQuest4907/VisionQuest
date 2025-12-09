@@ -5,7 +5,10 @@ const userSchema = new mongoose.Schema({
     userID: { type: String, required: true, unique: true, default: () => new mongoose.Types.ObjectId().toString() },
     userName: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true},
-    password: { type: String, required: true },
+    password: { type: String, required: true, minlength: 12 },
+    role: { type: String, enum: ['user', 'admin'], default: 'user' },
+    failedLoginAttempts: { type: Number, default: 0 },
+    lockUntil: { type: Date, default: null },
     
     //progress tracking array
     progressTracker: [{moduleID: { type: String, required: true },completionStatus: { type: String, enum: ['not_started', 'in_progress', 'completed'], default: 'not_started' },attempts: { type: Number, default: 0 },lastQuizScore: { type: Number, default: null },lastCompleteDate: { type: Date }}],
@@ -30,4 +33,9 @@ userSchema.pre('save', function (next) {
 userSchema.methods.comparePassword = function (candidatePassword) {
     return bcrypt.compareSync(candidatePassword, this.password);
 };
+
+userSchema.methods.isLocked = function () {
+    return this.lockUntil && this.lockUntil > new Date();
+};
+
 module.exports = mongoose.model('User', userSchema);
