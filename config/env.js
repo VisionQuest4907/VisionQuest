@@ -1,9 +1,7 @@
-//use environmental variables for secrets to avoid hardcoding 
+// use environmental variables for secrets to avoid hardcoding
+require('dotenv').config();
 
-import dotenv from 'dotenv';
-dotenv.config();
-
-export const {
+const {
   PORT = 5000,
   MONGO_URI,
   JWT_SECRET,
@@ -16,6 +14,13 @@ if (!MONGO_URI) {
 }
 
 if (!JWT_SECRET) {
-  console.error('JWT_SECRET not sete in .env');
+  console.error('JWT_SECRET not set in .env');
   process.exit(1);
 }
+
+module.exports = {
+  PORT,
+  MONGO_URI,
+  JWT_SECRET,
+  NODE_ENV,
+};

@@ -6,6 +6,8 @@
   "scripts": {
     "setup": "node scripts/setup_and_test_db.js",
     "health": "node scripts/health_check.js",
+    "backup": "node scripts/backup_db.js",
+    "restore": "node scripts/restore_db.js",
     "start": "node server.js"
   },
   "keywords": [],
