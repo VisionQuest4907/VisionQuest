@@ -17,10 +17,16 @@ const loginSchema = Joi.object({
 });
 
 //Quiz submission schema. Prevent invalid quiz input
-const quizSchema = Joi.object({
+const userQuizSubmitSchema = Joi.object({
     //Require moduleID and quiz score to submit
     moduleID: Joi.string().min(1).required(),
     quizScore: Joi.number().min(0).max(100).required()
+});
+
+//module Grading Schema
+const moduleGradeSchema = Joi.object({
+  //Answers must be an array of 4 integers
+    answers: Joi.array().items(Joi.number().integer().min(0).max(3)).min(1).required()
 });
 
 const validateBody = (schema) => (req, res, next) => {
@@ -44,5 +50,6 @@ module.exports = {
   validateBody,
   registerSchema,
   loginSchema,
-  quizSchema
+  userQuizSubmitSchema,
+  moduleGradeSchema
 };
