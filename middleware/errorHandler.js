@@ -16,7 +16,7 @@ const errorHandler = (err, req, res, next) => {
     response.stack = err.stack;
   }
 
-  res.status(status).json(reponse);
+  res.status(status).json(response);
 };
 
 module.exports = {
