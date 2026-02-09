@@ -19,7 +19,7 @@ const loginSchema = Joi.object({
 const validateBody = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body, {
     abortEarly: false,
-    stringUnknown: true,
+    allowUnknown: true,
   });
 
   if (error) {
