@@ -16,6 +16,13 @@ const loginSchema = Joi.object({
   password: Joi.string().min(12).max(128).required(),
 });
 
+//Quiz submission schema. Prevent invalid quiz input
+const quizSchema = Joi.object({
+    //Require moduleID and quiz score to submit
+    moduleID: Joi.string().min(1).required(),
+    quizScore: Joi.number().min(0).max(100).required()
+});
+
 const validateBody = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body, {
     abortEarly: false,
@@ -37,4 +44,5 @@ module.exports = {
   validateBody,
   registerSchema,
   loginSchema,
+  quizSchema
 };
