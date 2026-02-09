@@ -2,6 +2,9 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const helmet = require("helmet");
+const cors = require("cors");
+
 const { PORT, MONGO_URI, NODE_ENV } = require('./config/env');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
