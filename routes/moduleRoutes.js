@@ -2,7 +2,7 @@ const express=require('express');
 const router=express.Router();
 const Module= require('../models/training_modules');
 const { requireAuth } = require("../middleware/auth");
-const { validateBody } = require("../middleware/validation");
+const { validateBody, moduleGradeSchema } = require("../middleware/validation");
 
 //get modules
 router.get('/', requireAuth, async(req, res)=> {
@@ -51,7 +51,7 @@ router.get('/:moduleID/questions', requireAuth, async(req,res)=>{
 });
 
 //Receive correct module question answers and quiz grade
-router.post('/:moduleID/grade', requireAuth, async(req,res)=>{
+router.post('/:moduleID/grade', requireAuth, validateBody(moduleGradeSchema), async(req,res)=>{
     try{
         
         const module=await Module.findOne({moduleID: req.params.moduleID});
@@ -59,7 +59,18 @@ router.post('/:moduleID/grade', requireAuth, async(req,res)=>{
 
         const {answers}=req.body;
 
+        //Check if type is array
         if(!Array.isArray(answers)) return res.status(400).json({message: 'Answers must be in an array form'});
+        
+        //Ensure that all questions are answered
+        if(answers.length!==module.moduleQuestions.length) return res.status(400).json({message: `You must provide answers for all ${module.moduleQuestions.length} questions`});
+        
+        //Ensure that each question has a set of 4 answer choices
+        for (const q of module.moduleQuestions) {
+            if (q.answerChoices.length !== 4) {
+                return res.status(400).json({message: 'Each question must have 4 answer choices'});
+            }
+        }
 
         let correct=0;
         const score =[];
