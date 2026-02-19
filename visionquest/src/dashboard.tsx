@@ -1,7 +1,8 @@
 import './dashboard.css';
 import {useNavigate} from 'react-router-dom';
-import type {MouseEvent} from 'react';
+import type {MouseEvent, useState} from 'react';
 import ModOne from "./assets/moduleone.png";
+import ModTwo from "./assets/moduletwo.png";
 
 function Dashboard() {
     const goTo = useNavigate();
@@ -26,17 +27,33 @@ function Dashboard() {
         e.preventDefault();
         goTo("/moduleone/expectations");
     }
+    function toModTwo(e:MouseEvent<HTMLImageElement>){
+        e.preventDefault();
+        goTo("/moduletwo/expectations");
+    }
+    function toAbout(e:MouseEvent<HTMLAnchorElement>){
+        e.preventDefault();
+        goTo("/");
+    }
     return  (
         <div className="dash-pg">
             <nav className="dash-nav">
                 <a href="/dashboard" onClick={toDash}>Dashboard</a>
                 <a href="/download" onClick={toDownload}>Downloadables</a>
                 <a href="/certview" onClick={toCertView}>Certificates</a>
-                <a href="/settings" onClick={toSetting}>Settings</a>
-                <a href="#">Profile</a>
+                <div className="droopbutton">
+                    <a href="#">Profile</a>
+                    <div className="dropmenu">
+                        <a href="/account">Account</a>
+                        <a href="/settings" onClick={toSetting}>Settings</a>
+                        <a href="/" onClick={toAbout}>Logout</a>
+                    </div>
+                </div>
             </nav>
-            <img src={ModOne} className="mod-pic" onClick={toModOne}></img>
-
+            <div className="modtabs">
+                <img src={ModOne} className="mod-pic" onClick={toModOne}></img>
+                <img src={ModTwo} className="mod-pic" onClick={toModTwo}></img>
+            </div>
         </div>
     
     );
