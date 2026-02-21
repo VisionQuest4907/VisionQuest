@@ -1,0 +1,143 @@
+{
+  "timestamp": "2025-12-09T05:49:59.472Z",
+  "users": [
+    {
+      "_id": "6937aa41bf7a4c08bd8bc78e",
+      "userName": "sydneyj",
+      "email": "sydney@example.com",
+      "password": "$2b$10$oiN4pXVcRBnEm93vdwApIeIzIO299azMOYeiSavUN8cnn4RNKdaNK",
+      "role": "user",
+      "failedLoginAttempts": 0,
+      "lockUntil": null,
+      "progressTracker": [
+        {
+          "moduleID": "mod0001",
+          "completionStatus": "completed",
+          "attempts": 1,
+          "lastQuizScore": 85,
+          "lastCompleteDate": "2025-12-09T04:49:05.024Z",
+          "_id": "6937aa41bf7a4c08bd8bc78f"
+        },
+        {
+          "moduleID": "mod0002",
+          "completionStatus": "in_progress",
+          "attempts": 1,
+          "lastQuizScore": 50,
+          "_id": "6937aa41bf7a4c08bd8bc790"
+        }
+      ],
+      "certificates": [
+        {
+          "moduleID": "mod0001",
+          "_id": "6937aa41bf7a4c08bd8bc791",
+          "certID": "6937aa41bf7a4c08bd8bc792",
+          "dateEarned": "2025-12-09T04:49:05.027Z"
+        }
+      ],
+      "quizScores": [
+        {
+          "moduleID": "mod0001",
+          "quizScore": 85,
+          "attemptNum": 1,
+          "_id": "6937aa41bf7a4c08bd8bc793",
+          "timestamp": "2025-12-09T04:49:05.027Z"
+        },
+        {
+          "moduleID": "mod0002",
+          "quizScore": 50,
+          "attemptNum": 1,
+          "_id": "6937aa41bf7a4c08bd8bc794",
+          "timestamp": "2025-12-09T04:49:05.028Z"
+        }
+      ],
+      "userID": "6937aa41bf7a4c08bd8bc795",
+      "createdAt": "2025-12-09T04:49:05.034Z",
+      "updatedAt": "2025-12-09T04:49:05.034Z",
+      "__v": 0
+    },
+    {
+      "_id": "6937aa41bf7a4c08bd8bc796",
+      "userName": "clairep",
+      "email": "claire@example.com",
+      "password": "$2b$10$ZIBqFwLS5FPfPYxhVKHyfuAA9bbGSCygi0v5pm1C7e1ZFiY6m7o02",
+      "role": "user",
+      "failedLoginAttempts": 0,
+      "lockUntil": null,
+      "userID": "6937aa41bf7a4c08bd8bc797",
+      "progressTracker": [],
+      "certificates": [],
+      "quizScores": [],
+      "createdAt": "2025-12-09T04:49:05.203Z",
+      "updatedAt": "2025-12-09T04:49:05.203Z",
+      "__v": 0
+    }
+  ],
+  "modules": [
+    {
+      "_id": "6937aa40bf7a4c08bd8bc787",
+      "title": "Cybersecurity Training Lesson 1",
+      "description": "Introduction to basic Cybersecurity",
+      "materialURL": "https://example.com/cybersecurity101URL",
+      "moduleID": "mod0001",
+      "moduleQuestions": [
+        {
+          "question": "What is phishing?",
+          "multipleAnswers": [
+            "A virus",
+            "A social engineering technique that uses fake emails to get user information",
+            "A security strategy",
+            "A privacy policy"
+          ],
+          "correctAnswerIndex": 1,
+          "_id": "6937aa40bf7a4c08bd8bc788"
+        },
+        {
+          "question": "Which is a weak password?",
+          "multipleAnswers": [
+            "123#MyElemSecret",
+            "Pass56W@rd!",
+            "123456",
+            "Secr3t!S@f3"
+          ],
+          "correctAnswerIndex": 2,
+          "_id": "6937aa40bf7a4c08bd8bc789"
+        }
+      ],
+      "__v": 0
+    },
+    {
+      "_id": "6937aa40bf7a4c08bd8bc78a",
+      "title": "Cybersecurity Training Lesson 2",
+      "description": " Cybersecurity Authentication",
+      "materialURL": "https://example.com/cybersecurity202URL",
+      "moduleID": "mod0002",
+      "moduleQuestions": [
+        {
+          "question": "What is multi-factor authentication?",
+          "multipleAnswers": [
+            "Using a password, a security, question, and a login name",
+            "Using a username and password",
+            "Using a password and a one time code",
+            "Using a password, a one-time code, and a retina scan"
+          ],
+          "correctAnswerIndex": 3,
+          "_id": "6937aa40bf7a4c08bd8bc78b"
+        }
+      ],
+      "__v": 0
+    }
+  ],
+  "logs": [
+    {
+      "_id": "6937aa41bf7a4c08bd8bc79a",
+      "userRef": "6937aa41bf7a4c08bd8bc78e",
+      "userID": "6937aa41bf7a4c08bd8bc795",
+      "action": "module_completed",
+      "timestamp": "2025-12-09T04:49:05.391Z",
+      "details": {
+        "score": 85
+      },
+      "__v": 0
+    }
+  ]
+}

@@ -70,7 +70,7 @@ async function main() {
     const users =[ new User({
       userName: 'sydneyj',
       email: 'sydney@example.com',
-      password: 'test1234!', // Will be hashed by pre('save')
+      password: 'test1234!PASS', // Will be hashed by pre('save')
       progressTracker: [{ moduleID: 'mod0001', completionStatus:'completed', attempts:1, lastQuizScore:85, lastCompleteDate: new Date()}, {moduleID: 'mod0002', completionStatus:'in_progress', attempts:1, lastQuizScore:50}],
       certificates: [{moduleID: 'mod0001'}],
       quizScores: [{ moduleID: 'mod0001', quizScore: 85, attemptNum:1 }, { moduleID: 'mod0002', quizScore: 50, attemptNum:1 }]
@@ -79,7 +79,7 @@ async function main() {
     new User({
       userName:'clairep',
       email: 'claire@example.com',
-      password: 'test5678$',
+      password: 'test5678$PASS',
     })
   ];
     for (const u of users) {
