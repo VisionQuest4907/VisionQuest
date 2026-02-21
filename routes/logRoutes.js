@@ -1,9 +1,16 @@
 const express=require('express');
 const router=express.Router();
 const Log= require('../models/logs');
-
+const { requireAuth, requireRole } = require("../middleware/auth");
+function requireSelf(req, res, next) {
+    if (!req.user) return res.status(401).json({ message: "Authentication required" });
+    if (req.user.userID !== req.params.userID) {
+        return res.status(403).json({ message: "Forbidden: You can only access your own profile" });
+    }
+    next();
+}
 //get user logs
-router.get('/user/:userID', async(req, res)=>{
+router.get('/user/:userID', requireAuth, requireSelf,async(req, res)=>{
     try{
         const logs = await Log.find({ userID: req.params.userID}).sort({timestamp: -1}).limit(100);
         
@@ -18,7 +25,7 @@ router.get('/user/:userID', async(req, res)=>{
 });
 
 //Get all logs
-router.get('/', async(req, res)=>{
+router.get('/', requireAuth, requireRole("admin"), async(req, res)=>{
     try{
         const logs = await Log.find().sort({timestamp:-1}).limit(100);
         res.json({count:logs.length, logs});

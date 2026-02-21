@@ -1,0 +1,94 @@
+.setting-pg {
+    color: rgb(255, 247, 0);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+
+    background-image: url('./assets/settingback.png');
+
+    margin: 0;
+    min-height: 100vh;
+    width: 100vw;
+    display: flex;
+    padding: 2rem;
+    text-align: center;
+    flex-direction: column;
+}
+
+.setting-nav {
+  position: fixed;
+  overflow: auto;
+  white-space: nowrap;
+  background-color: navy;
+  color: white;
+  width: 100%;
+  height: 50px;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.setting-nav a{
+    display: block;
+    padding: 14px 16px;
+    text-decoration: none;
+    text-align: center;
+    color: white;
+}
+
+.setting-nav a:hover{
+    background-color: darkslateblue;
+}
+
+.setting-pg h1{
+    text-align: center;
+    padding-top: 20px;
+    width: 100%;
+}
+
+.setting-pg form {
+    justify-content: center;
+    margin: 0 auto;
+    
+}
+
+.change-info {
+    background-color: rgb(0, 0, 65);
+    border: 2px solid teal;
+    color: white;
+    padding-bottom: 50px;
+}
+
+.change-info form {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    
+}
+
+.group {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+.group label {
+    width: 140px;
+    text-align: right;
+}
+
+.group input {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.setting-change-form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 20px;
+}
