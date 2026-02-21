@@ -1,4 +1,5 @@
 const { NODE_ENV } = require('../config/env');
+const { logger } = require("./logging");
 
 const notFoundHandler = (req, res, next) => {
   res.status(404).json({ message: 'Not Found' });
@@ -8,6 +9,8 @@ const errorHandler = (err, req, res, next) => {
   let status = err.statusCode || err.status || 500;
   let message = err.message || "Error";
 
+  logger.error({ err, path: req.originalUrl }, "Unhandled error");
+  
   //invalid json body
   if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
     status = 400;
