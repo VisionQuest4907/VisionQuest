@@ -4,6 +4,8 @@ const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const helmet = require("helmet");
 const cors = require("cors");
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
 
 const { PORT, MONGO_URI, NODE_ENV } = require('./config/env');
 const { apiLimiter } = require('./middleware/rateLimiter');
@@ -16,15 +18,34 @@ const userDataRoutes = require("./routes/userDataRoutes");
 
 const app = express();
 
+//refuse startup if critical secret missing
+if (!process.env.JWT_SECRET) {
+  console.error('Missing JWT_SECRET');
+  process.exit(1);
+}
+
 //trust proxy for correct secure cookies when using Elastic Beanstalk and Cloudfront
 app.set("trust proxy", 1);
 
-//Helmet security headers
-app.use(helmet());
+//hide express fingerprint
+app.disable('x-powered-by');
 
-app.use(express.json());
+//Helmet security headers
+app.use(helmet({
+  crossOriginResourcePolicy: { policy: "same-site" },
+}));
+
+//safer body parsing with request size limited 
+app.use(express.json({ limit: '200kb' }));
+
 app.use(cookieParser());
 app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
+
+//sanitize mongo style operators from user input
+app.use(mongoSanitize());
+
+//prevent HTTP parameter pollution
+app.use(hpp());
 
 const allowed = (process.env.CORS_ORIGINS || "")
   .split(",")
@@ -52,6 +73,11 @@ app.use('/api/users', userRoutes);
 app.use("/api/user-data", userDataRoutes);
 app.use("/api/modules", moduleRoutes);
 app.use("/api/logs", logRoutes);
+
+//route to root
+app.get('/', (req, res) => {
+  res.json({ message: 'VisionQuest API is running' });
+});
 
 //add health endpoint
 app.get("/api/health", (req, res) => {

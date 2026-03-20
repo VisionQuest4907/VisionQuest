@@ -12,7 +12,7 @@ const requireAuth = async (req, res, next) => {
        : null);
     
     if (!token) {
-      return res.status(401).json({ message: 'Authentication required' });
+      return res.status(401).json({ message: 'Forbidden' });
     }
 
     const payload = jwt.verify(token, JWT_SECRET);
@@ -26,7 +26,7 @@ const requireAuth = async (req, res, next) => {
     next();
   } catch (err) {
     console.error('Auth Error:' , err.message);
-    return res.status(401).json({ message: 'Invalid Token' });
+    return res.status(401).json({ message: 'Unauthorized' });
   }
 };
 
@@ -36,6 +36,17 @@ const requireRole = (role) => (req, res, next) => {
   }
 
   if (req.user.role !== role) {
+    return res.status(403).json({ message: "Forbidden" });
+  }
+  next();
+};
+
+//checks ownership 
+const requireOwnership = (param = 'userID') => (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+  if (req.user.userID !== req.params[param] {
     return res.status(403).json({ message: "Forbidden" });
   }
   next();
