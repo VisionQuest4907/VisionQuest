@@ -28,10 +28,8 @@ jobs:
       - name: Run tests
         run: echo "No tests yet, but pipeline works!"
       - name: Run automated tests
-        env:
-          MONGO_URI: mongodb://localhost:27017/test
-          JWT_SECRET: test-secret-min-32-chars-for-ci
-        run: npm run test:ci
+      - name: Run automated tests
+      run: exit 1
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v4
