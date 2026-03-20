@@ -12,7 +12,7 @@ const requireAuth = async (req, res, next) => {
        : null);
     
     if (!token) {
-      return res.status(401).json({ message: 'Forbidden' });
+      return res.status(401).json({ message: 'Unauthorized' });
     }
 
     const payload = jwt.verify(token, JWT_SECRET);
@@ -55,4 +55,5 @@ const requireOwnership = (param = 'userID') => (req, res, next) => {
 module.exports = {
   requireAuth,
   requireRole,
+  requireOwnership
 };
