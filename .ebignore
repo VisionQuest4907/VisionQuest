@@ -1,0 +1,12 @@
+# Elastic Beanstalk: exclude from deployment (keeps teammates' repos and secrets safe)
+.env
+.env.*
+node_modules/
+.git/
+VisionQuest-app-dev/
+VisionQuest-database-dev/
+VisionQuest-security-code/
+docs/
+assets/
+*.log
+.DS_Store

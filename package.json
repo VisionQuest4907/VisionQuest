@@ -9,6 +9,10 @@
     "backup": "node scripts/backup_db.js",
     "backup:schedule": "node scripts/backup_scheduler.js",
     "restore": "node scripts/restore_db.js",
+    "inventory": "node scripts/generate_asset_inventory.js",
+    "test": "jest",
+    "test:ci": "jest --ci --coverage",
+    "coverage": "jest --coverage",
     "start": "node server.js"
   },
   "keywords": [],
@@ -26,6 +30,11 @@
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.1",
     "morgan": "^1.10.1",
-    "node-cron": "^4.2.1"
+    "node-cron": "^4.2.1",
+    "helmet": "^8.1.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.2.2"
   }
 }

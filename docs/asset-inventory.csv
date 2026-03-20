@@ -1,0 +1,24 @@
+category,asset_type,name,version_or_details,source
+dependencies,npm,bcryptjs,^3.0.3,package.json
+dependencies,npm,cookie-parser,^1.4.7,package.json
+dependencies,npm,cors,^2.8.5,package.json
+dependencies,npm,dotenv,^17.2.3,package.json
+dependencies,npm,express,^5.1.0,package.json
+dependencies,npm,express-rate-limit,^8.2.1,package.json
+dependencies,npm,joi,^18.0.2,package.json
+dependencies,npm,jsonwebtoken,^9.0.3,package.json
+dependencies,npm,mongodb,^6.20.0,package.json
+dependencies,npm,mongoose,^8.19.1,package.json
+dependencies,npm,morgan,^1.10.1,package.json
+dependencies,npm,node-cron,^4.2.1,package.json
+dependencies,npm,helmet,^8.1.0,package.json
+containers,docker,visionquest-api,node:18-alpine port 5000,docker-compose.yml
+containers,docker,visionquest-api-ci,node:18-alpine,.github/workflows/ci.yml
+database_collections,mongodb,users,User,models/users.js
+database_collections,mongodb,modules,Modules,models/training_modules.js
+database_collections,mongodb,logs,Log,models/logs.js
+cloud_services,service,GitHub Actions,"CI (build, test, audit, artifact)",.github/workflows/ci.yml
+cloud_services,service,AWS Elastic Beanstalk,Backend hosting,deployment
+cloud_services,service,MongoDB Atlas (or self-hosted),Database,MONGO_URI
+runtime_assets,config,Node.js,18,Dockerfile / CI
+runtime_assets,config,Environment config,".env (MONGO_URI, JWT_SECRET, PORT, NODE_ENV, CORS_ORIGINS)",config/env.js

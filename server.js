@@ -57,10 +57,32 @@ app.use("/api/logs", logRoutes);
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
+// Health & readiness endpoints
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/ready", (req, res) => {
+  const state = mongoose.connection.readyState;
+  const isReady = state === 1;
+
+  res.status(isReady ? 200 : 503).json({
+    status: isReady ? "ready" : "not_ready",
+    dbConnected: isReady,
+    dbState: state,
+    timestamp: new Date().toISOString(),
+  });
+});
 
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+// Start server only when run directly (not when required by tests)
+if (require.main === module) {
 mongoose.connect(MONGO_URI).then(() => {
   console.log("Connected to MongoDB");
   app.listen(PORT, () => {
@@ -70,4 +92,7 @@ mongoose.connect(MONGO_URI).then(() => {
   console.error("MongoDB Connection Error:", err);
   process.exit(1);
 });
+}
+
+module.exports = app;
   
