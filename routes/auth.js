@@ -16,7 +16,10 @@ function createToken(user) {
   return jwt.sign(
     {
       sub: user.userID,
-      role: user.role,
+      userID: user.userID,
+      role: user.role || 'user',
+      email: user.email,
+      userName: user.userName,
     },
     JWT_SECRET,
     { expiresIn: '1h' }
@@ -26,13 +29,15 @@ function createToken(user) {
 router.post('/register', validateBody(registerSchema), async (req, res, next) => {
   try {
     const { userName, email, password } = req.body;
-    const existing = await User.findOne({ email });
+    const existing = await User.findOne({
+      $or: [{ email: email.toLowerCase() }, { userName }]
+    });
     
     if (existing) {
       return res.status(409).json({ message: "Email Already Registered" });
     }
 
-    const user = new User({ userName, email, password });
+    const user = new User({ userName, email: email.toLowerCase(), password });
     await user.save();
     console.log(`New User Registered: ${email}`);
     res.status(201).json({ message: "User Registered Successfully" });
@@ -54,7 +59,7 @@ router.post('/login', loginLimiter, validateBody(loginSchema), async (req, res, 
       return res.status(401).json({ message: "Invalid Credentials" });
     }
 
-    if (user.isLocked()) {
+    if (typeof user.isLocked === 'function' && user.isLocked()) {
       console.warn(`Locked Account Login Attempt: ${user.email}`);
       return res.status(423).json({ message: "Account locked. Try again later." });
     }
@@ -86,14 +91,18 @@ router.post('/login', loginLimiter, validateBody(loginSchema), async (req, res, 
     });
 
     console.log(`Successful Login: ${user.email}`);
-    res.json({ message: "Login Successful", token });
+    res.json({ message: "Login Successful" });
   } catch (err) {
     next(err);
   }
 });
 
 router.post('/logout', (req, res) => {
-  res.clearCookie('token');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'strict'
+  });
   res.json({ message: 'Logged Out' });
 });
 
