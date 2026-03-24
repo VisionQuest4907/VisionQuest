@@ -29,6 +29,18 @@ const moduleGradeSchema = Joi.object({
     answers: Joi.array().items(Joi.number().integer().min(0).max(3)).min(1).required()
 });
 
+//update user profile
+const updateProfileSchema = Joi.object({
+  userName: Joi.string().min(2).max(50).trim().optional(),
+  firstName: Joi.string().max(50).trim().allow("").optional(),
+  lastName: Joi.string().max(50).trim().allow("").optional(),
+  phoneNumber: Joi.string().max(20).trim().allow("").optional(),
+  email: Joi.string().email().max(254).trim().optional(),
+  password: Joi.string().min(12).max(128).optional(),
+
+  //reject if all fields are empty
+}).min(1);
+
 const validateBody = (schema) => (req, res, next) => {
   const { error, value } = schema.validate(req.body, {
     abortEarly: false,
@@ -51,5 +63,6 @@ module.exports = {
   registerSchema,
   loginSchema,
   userQuizSubmitSchema,
-  moduleGradeSchema
+  moduleGradeSchema,
+  updateProfileSchema
 };
