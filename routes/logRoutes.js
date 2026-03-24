@@ -14,7 +14,7 @@ router.get('/user/:userID', requireAuth, requireSelf,async(req, res)=>{
     try{
         const logs = await Log.find({ userID: req.params.userID}).sort({timestamp: -1}).limit(100);
         
-        if (!logs.length) return res.json({message: 'No logs found for this user', logs:[]});
+        if (!logs.length) return res.json({count:0, logs:[]});
         res.json({count:logs.length, logs});
 
     } catch(err){
