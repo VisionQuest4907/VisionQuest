@@ -87,13 +87,41 @@ app.get("/api/health", (req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
+app.get("/api/ready", (req, res) => {
+  const dbStatus = mongoose.connection.readyState === 1 ? "up" : "down";
+  if (dbStatus === "down") {
+    return res.status(503).json({ status: "not ready", db: dbStatus });
+  }
+  res.json({ status: "ready", db: dbStatus });
+});
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
+  });
+});
+
+app.get("/ready", (req, res) => {
+  const state = mongoose.connection.readyState;
+  const isReady = state === 1;
+
+  res.status(isReady ? 200 : 503).json({
+    status: isReady ? "ready" : "not_ready",
+    dbConnected: isReady,
+    dbState: state,
+    timestamp: new Date().toISOString(),
+  });
+});
+
+const port = PORT || process.env.PORT || 5000;
+
 mongoose.connect(MONGO_URI).then(() => {
   console.log("Connected to MongoDB");
-  app.listen(PORT, () => {
-    console.log(`Server Running on Port ${PORT}`);
+  app.listen(port, '0.0.0.0', () => {
+    console.log(`Server Running on Port ${port}`);
   });
 }).catch((err) => {
   console.error("MongoDB Connection Error:", err);
   process.exit(1);
 });
-  
