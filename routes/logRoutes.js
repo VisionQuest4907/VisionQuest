@@ -28,6 +28,12 @@ router.get('/user/:userID', requireAuth, requireSelf,async(req, res)=>{
 router.get('/', requireAuth, requireRole("admin"), async(req, res)=>{
     try{
         const logs = await Log.find().sort({timestamp:-1}).limit(100);
+        await Log.create({
+            userRef: req.user._id,
+            userID: req.user.userID,
+            action: "admin_viewed_logs",
+            details:{limit:100, scope:"all"}
+        });
         res.json({count:logs.length, logs});
     } catch(err){
         //log error message and status response
