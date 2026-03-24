@@ -16,7 +16,10 @@ const userSchema = new mongoose.Schema({
     certificates: [{certID: { type: String, default: () => new mongoose.Types.ObjectId().toString() }, userID: {type:String, required: true}, moduleID: { type: String, required: true },dateEarned: { type: Date, default: Date.now }}],
 
     //quiz score array for user
-    quizScores: [{moduleID: { type: String, required: true },quizScore: { type: Number, required: true },attemptNum: { type: Number, default: 1 },timestamp: { type: Date, default: Date.now }}]
+    quizScores: [{moduleID: { type: String, required: true },quizScore: { type: Number, required: true },attemptNum: { type: Number, default: 1 },timestamp: { type: Date, default: Date.now }}],
+    currentStreak: {type: Number, default: 0},
+    longestStreak: {type: Number, default: 0},
+    lastActiveDate: {type: Date, default: null}
 }, { timestamps: true });
 
 userSchema.pre('save', function (next) {
