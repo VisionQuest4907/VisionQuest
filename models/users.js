@@ -13,7 +13,7 @@ const userSchema = new mongoose.Schema({
     //progress tracking array
     progressTracker: [{moduleID: { type: String, required: true },completionStatus: { type: String, enum: ['not_started', 'in_progress', 'completed'], default: 'not_started' },attempts: { type: Number, default: 0 },lastQuizScore: { type: Number, default: null },lastCompleteDate: { type: Date }}],
     //certificates array for user
-    certificates: [{certID: { type: String, default: () => new mongoose.Types.ObjectId().toString() }, moduleID: { type: String, required: true },dateEarned: { type: Date, default: Date.now }}],
+    certificates: [{certID: { type: String, default: () => new mongoose.Types.ObjectId().toString() }, userID: {type:String, required: true}, moduleID: { type: String, required: true },dateEarned: { type: Date, default: Date.now }}],
 
     //quiz score array for user
     quizScores: [{moduleID: { type: String, required: true },quizScore: { type: Number, required: true },attemptNum: { type: Number, default: 1 },timestamp: { type: Date, default: Date.now }}]
