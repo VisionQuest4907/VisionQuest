@@ -1,0 +1,13 @@
+# Exclude from Docker build (keeps image small, avoids reference repos)
+.env
+.env.*
+node_modules/
+.git/
+VisionQuest-app-dev/
+VisionQuest-database-dev/
+VisionQuest-security-code/
+docs/
+assets/
+*.log
+.DS_Store
+backups/
