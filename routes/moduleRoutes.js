@@ -3,11 +3,13 @@ const router=express.Router();
 const Module= require('../models/training_modules');
 const { requireAuth } = require("../middleware/auth");
 const { validateBody, moduleGradeSchema } = require("../middleware/validation");
+const Log = require('../models/logs');
 
 //get modules
 router.get('/', requireAuth, async(req, res)=> {
     try{
-        const modules=await Module.find().select('moduleID title description materialURL');
+        const modules=await Module.find().select('moduleID title description order tags estTime').sort({order: 1});
+        
         res.json({modules});
 
     } catch(err){
@@ -21,11 +23,21 @@ router.get('/:moduleID', requireAuth,async(req, res)=>{
     try{
         const module=await Module.findOne({moduleID: req.params.moduleID});
         if(!module) return res.status(404).json({error: 'Module not found'});
+        await Log.create({
+            userRef: req.user._id,
+            userID: req.user.userID,
+            action: "module_started",
+            moduleID: req.params.moduleID,
+            details:{title: module.title}
+        });
         res.json({
             moduleID: module.moduleID,
             title: module.title,
             description: module.description,
-            materialURL: module.materialURL,
+            order: module.order,
+            tags: module.tags,
+            estTime: module.estTime,
+            content: module.content || [],
             questions: module.moduleQuestions.length
         });
     } catch(err){
