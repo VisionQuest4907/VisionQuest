@@ -84,9 +84,6 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-app.use(notFoundHandler);
-app.use(errorHandler);
-
 app.get("/api/ready", (req, res) => {
   const dbStatus = mongoose.connection.readyState === 1 ? "up" : "down";
   if (dbStatus === "down") {
@@ -113,6 +110,8 @@ app.get("/ready", (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 const port = PORT || process.env.PORT || 5000;
 
