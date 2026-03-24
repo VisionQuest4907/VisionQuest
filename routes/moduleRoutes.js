@@ -9,7 +9,7 @@ const Log = require('../models/logs');
 router.get('/', requireAuth, async(req, res)=> {
     try{
         const modules=await Module.find().select('moduleID title description order tags estTime').sort({order: 1});
-        
+
         res.json({modules});
 
     } catch(err){
@@ -23,6 +23,7 @@ router.get('/:moduleID', requireAuth,async(req, res)=>{
     try{
         const module=await Module.findOne({moduleID: req.params.moduleID});
         if(!module) return res.status(404).json({error: 'Module not found'});
+
         await Log.create({
             userRef: req.user._id,
             userID: req.user.userID,
