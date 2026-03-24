@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
 
     //quiz score array for user
     quizScores: [{moduleID: { type: String, required: true },quizScore: { type: Number, required: true },attemptNum: { type: Number, default: 1 },timestamp: { type: Date, default: Date.now }}],
+    
     currentStreak: {type: Number, default: 0},
     longestStreak: {type: Number, default: 0},
     lastActiveDate: {type: Date, default: null}
