@@ -34,7 +34,7 @@ function securityMiddleware(app) {
         }
         return allowed.includes(origin)
           ? cb(null, true)
-          : cb(new Error("CORS blocked");
+          : cb(new Error("CORS blocked"));
       },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
