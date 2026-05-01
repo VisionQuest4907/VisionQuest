@@ -6,16 +6,36 @@ const hpp = require("hpp");
 function securityMiddleware(app) {
   app.disable("x-powered-by");
   app.set("trust proxy", 1);
+  
   app.use(
     helmet({
-      contentSecurityPolicy: false, //turn on later after you know your script/style sources
+      contentSecurityPolicy: false,
       crossOriginResourcePolicy: { policy: "same-site" },
     })
   );
 
+  const allowed = (process.env.CORS_ORIGINS || "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   app.use(
     cors({
-      origin: process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : false,
+      origin: (origin, cb) => {
+        if (!origin) return cb(null, true);
+
+        const isProd = process.env.NODE_ENV === "production";
+
+        if (allowed.length === 0) {
+          if (isProd) {
+            return cb(new Error("CORS blocked: No allowed origins configured"));
+          }
+          return cb(null, true);
+        }
+        return allowed.includes(origin)
+          ? cb(null, true)
+          : cb(new Error("CORS blocked");
+      },
       credentials: true,
       methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     })
