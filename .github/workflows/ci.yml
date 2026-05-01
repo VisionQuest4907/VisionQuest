@@ -56,7 +56,7 @@ jobs:
         run: |
           if [ -n "$SLACK_WEBHOOK_URL" ] && [ -f audit-report.txt ]; then
             if grep -qi 'vulnerabilit' audit-report.txt && ! grep -q 'found 0 vulnerabilities' audit-report.txt; then
-              curl -sS -X POST -H 'Content-type: application/json' --data "{\"text\":\"🔒 npm audit found vulnerabilities: ${{ github.repository }} — ${{ github.ref_name }} — ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" "$SLACK_WEBHOOK_URL" || true
+              curl -sS -X POST -H 'Content-type: application/json' --data "{\"text\":\" npm audit found vulnerabilities: ${{ github.repository }} — ${{ github.ref_name }} — ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" "$SLACK_WEBHOOK_URL" || true
             fi
           fi
   notify-on-failure:
@@ -69,7 +69,7 @@ jobs:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
         run: |
           if [ -n "$SLACK_WEBHOOK_URL" ]; then
-            curl -sS -X POST -H 'Content-type: application/json' --data "{\"text\":\"⚠️ CI Failed: ${{ github.repository }} — ${{ github.ref_name }} — Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" "$SLACK_WEBHOOK_URL" || true
+            curl -sS -X POST -H 'Content-type: application/json' --data "{\"text\":\" CI Failed: ${{ github.repository }} — ${{ github.ref_name }} — Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}\"}" "$SLACK_WEBHOOK_URL" || true
           else
             echo "SLACK_WEBHOOK_URL not set; skip notification"
           fi
