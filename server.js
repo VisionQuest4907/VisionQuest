@@ -15,9 +15,12 @@ const userRoutes = require('./routes/users');
 const moduleRoutes = require("./routes/moduleRoutes");
 const logRoutes = require("./routes/logRoutes");
 const userDataRoutes = require("./routes/userDataRoutes");
-const security = require("./middleware/security");
+const { securityMiddleware } = require("./middleware/security");
 
 const app = express();
+
+//security middleware
+securityMiddleware(app);
 
 //refuse startup if critical secret missing
 if (!process.env.JWT_SECRET) {
@@ -35,9 +38,6 @@ app.disable('x-powered-by');
 app.use(helmet({
   crossOriginResourcePolicy: { policy: "same-site" },
 }));
-
-//Security middleware
-app.use(security)
 
 //safer body parsing with request size limited 
 app.use(express.json({ limit: '200kb' }));
