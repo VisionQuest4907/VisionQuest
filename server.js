@@ -2,25 +2,19 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-const helmet = require("helmet");
-const cors = require("cors");
-const mongoSanitize = require('express-mongo-sanitize');
-const hpp = require('hpp');
 
 const { PORT, MONGO_URI, NODE_ENV } = require('./config/env');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
+const { securityMiddleware } = require("./middleware/security");
+
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const moduleRoutes = require("./routes/moduleRoutes");
 const logRoutes = require("./routes/logRoutes");
 const userDataRoutes = require("./routes/userDataRoutes");
-const { securityMiddleware } = require("./middleware/security");
 
 const app = express();
-
-//security middleware
-securityMiddleware(app);
 
 //refuse startup if critical secret missing
 if (!process.env.JWT_SECRET) {
@@ -28,48 +22,11 @@ if (!process.env.JWT_SECRET) {
   process.exit(1);
 }
 
-//trust proxy for correct secure cookies when using Elastic Beanstalk and Cloudfront
-app.set("trust proxy", 1);
-
-//hide express fingerprint
-app.disable('x-powered-by');
-
-//Helmet security headers
-app.use(helmet({
-  crossOriginResourcePolicy: { policy: "same-site" },
-}));
-
-//safer body parsing with request size limited 
-app.use(express.json({ limit: '200kb' }));
+//security middleware: helmet, CORS, mongoSanitize, hpp, body limit, trust proxy
+securityMiddleware(app);
 
 app.use(cookieParser());
 app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
-
-//sanitize mongo style operators from user input
-app.use(mongoSanitize());
-
-//prevent HTTP parameter pollution
-app.use(hpp());
-
-const allowed = (process.env.CORS_ORIGINS || "")
-  .split(",")
-  .map(s => s.trim())
-  .filter(Boolean);
-
-//CORS allowlist and credentials
-app.use(cors({
-  origin: (origin, cb) => {
-    if (!origin) return cb(null, true);
-    const isProd = NODE_ENV === "production";
-    if (allowed.length === 0){
-      if (isProd) return cb(new Error("CORS blocked: No allowed origins configured"));
-      return cb(null, true);
-    }
-      
-    return allowed.includes(origin) ? cb(null, true) : cb(new Error("CORS blocked"));
-  },
-  credentials: true
-}));
 
 app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
