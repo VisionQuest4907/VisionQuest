@@ -14,4 +14,4 @@ jobs:
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.10.0
         with:
-          target: 'https://visionquest26.me'
+          target: 'www.https://visionquest26.me'
