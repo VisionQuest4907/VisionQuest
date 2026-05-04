@@ -13,21 +13,34 @@ function securityMiddleware(app) {
     })
   );
 
-  app.use(
-    cors({
-      origin: process.env.CORS_ORIGINS ? process.env.CORS_ORIGINS.split(",") : false,
-      credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
-    })
-  );
+  //body limits
+  app.use(require("express").json({ limit: "200kb" }));
   //prevent Mongo operator injection
   app.use(mongoSanitize());
 
   //prevent HTTP parameter pollution
   app.use(hpp());
 
-  //body limits
-  app.use(require("express").json({ limit: "200kb" })); 
+  const allowed = (process.env.CORS_ORIGINS || "")
+  .split(",")
+  .map(s => s.trim())
+  .filter(Boolean);
+
+  app.use(
+    cors({
+      origin: (origin, cb) => {
+        if (!origin) return cb(null, true);
+        const isProd = process.env.NODE_ENV === "production";
+        if (allowed.length === 0){
+          if (isProd) return cb(new Error("CORS blocked: No allowed origins configured"));
+        return cb(null, true);
+        }
+        return allowed.includes(origin) ? cb(null, true) : cb(new Error("CORS blocked"));
+      },
+      credentials: true,
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    })
+  ); 
 }
 
 module.exports = { securityMiddleware }; 
