@@ -23,6 +23,12 @@ router.get('/:userID', requireAuth, requireSelf, async (req, res) => {
     try{
         const user=await User.findOne({userID: req.params.userID}).select('-password');
         if(!user) return res.status(404).json({message:'User not found'});
+        await Log.create({
+            userRef: user._id,
+            userID: user.userID,
+            action: 'profile_viewed',
+            details: { accessedAt: new Date() }
+        });
         res.json(user);
     }catch(err){
         res.status(500).json({message:'Error getting user', error:err.message})
