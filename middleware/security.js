@@ -14,6 +14,15 @@ function securityMiddleware(app) {
     })
   );
 
+  //body limits
+  app.use(require("express").json({ limit: "200kb" }));
+
+  //prevent Mongo operator injection
+  app.use(mongoSanitize());
+
+  //prevent HTTP parameter pollution
+  app.use(hpp());
+
   const allowed = (process.env.CORS_ORIGINS || "")
     .split(",")
     .map((s) => s.trim())
@@ -37,17 +46,10 @@ function securityMiddleware(app) {
           : cb(new Error("CORS blocked"));
       },
       credentials: true,
-      methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+      methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     })
   );
-  //prevent Mongo operator injection
-  app.use(mongoSanitize());
-
-  //prevent HTTP parameter pollution
-  app.use(hpp());
-
-  //body limits
-  app.use(require("express").json({ limit: "200kb" })); 
+   
 }
 
 module.exports = { securityMiddleware }; 
