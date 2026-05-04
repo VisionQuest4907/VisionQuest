@@ -21,7 +21,7 @@ async function main() {
       title: 'Module 1: Data Privacy Overview',
       description: 'Introduction to data privacy concepts, policies, and laws.',
       order: 1,
-      tags: ['data privacy', 'GDPR', 'HIPPA', 'PCI-DSS'],
+      tags: ['data privacy', 'GDPR', 'HIPAA', 'PCI-DSS'],
       estTime: 30,
       content: [
 
@@ -53,11 +53,11 @@ async function main() {
         },
         {
           type: 'video',
-          title: 'HIPPA',
+          title: 'HIPAA',
           url: 'https://www.youtube.com/watch?v=sNry7tMXlJw',
           order: 4,
           provider: 'youtube',
-          notes: 'Watch video on HIPPA'
+          notes: 'Watch video on HIPAA'
         },
         {
           type: 'video',
@@ -118,7 +118,7 @@ async function main() {
         },
 
         {
-          question: 'What Does HIPPA Protect?',
+          question: 'What Does HIPAA Protect?',
           multipleAnswers: [
             'Health Records',
             'Phone Numbers',
