@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
-
+const logger = require('./logger');
 const { PORT, MONGO_URI, NODE_ENV } = require('./config/env');
 const { apiLimiter } = require('./middleware/rateLimiter');
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
@@ -26,7 +26,11 @@ if (!process.env.JWT_SECRET) {
 securityMiddleware(app);
 
 app.use(cookieParser());
-app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined'));
+app.use(morgan(NODE_ENV === 'development' ? 'dev' : 'combined', {
+    stream: {
+        write: message => logger.info(message.trim())}
+}
+));
 
 app.use('/api', apiLimiter);
 app.use('/api/auth', authRoutes);
