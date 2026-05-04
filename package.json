@@ -12,6 +12,7 @@
     "inventory": "node scripts/generate_asset_inventory.js",
     "test": "jest",
     "test:ci": "jest --ci --coverage --passWithNoTests",
+    "test:db": "jest --testEnvironment node",
     "coverage": "jest --coverage",
     "db:monitor": "node scripts/db-monitor.js",
     "start": "node server.js"
@@ -43,6 +44,7 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "mongodb-memory-server": "^11.1.0",
     "supertest": "^7.2.2"
   }
 }
