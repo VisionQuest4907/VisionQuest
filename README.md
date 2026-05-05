@@ -1,6 +1,6 @@
 # VisionQuest Cybersecurity Training Platform
 
-VisionQuest is a cybersecurity training web application. The goal of the project is to make cybersecurity awareness training more interactive, measurable, and secure. Users can register for an account, log in, complete cybersecurity training modules, take quizzes, earn certificates, and track their learning progress.
+VisionQuest is a cybersecurity training platform. The goal of the project is to make cybersecurity awareness training more interactive and engaging. Users can register for an account, log in, complete cybersecurity training modules, take quizzes, earn certificates, and track their learning progress.
 
 VisionQuest training topics includes data privacy, password security, and social engineering.
 
