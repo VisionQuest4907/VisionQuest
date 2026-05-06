@@ -1,6 +1,5 @@
 /**
- * Module list + server-side quiz grading (answers array → score).
- *
+ * Module list + quiz grading.
  * What we check:
  * - Protected route: /api/modules needs a valid JWT.
  * - POST /api/modules/:moduleID/grade scores answers and sets passed when >= 80.
@@ -15,12 +14,11 @@ const {
   createModuleWithQuiz,
 } = require('./helpers');
 
-let app;
+const BASE_URL = process.env.TEST_BASE_URL || 'http://127.0.0.1:5000';
 
 describe('Modules — auth + quiz scoring', () => {
   beforeAll(async () => {
     await connectDb();
-    app = require('../app');
   });
 
   afterAll(async () => {
@@ -33,17 +31,19 @@ describe('Modules — auth + quiz scoring', () => {
 
   test('GET /api/modules without token returns 401', async () => {
     await createModuleWithQuiz();
-    await request(app).get('/api/modules').expect(401);
+    await request(BASE_URL).get('/api/modules').expect(401);
   });
 
   test('GET /api/modules with Bearer token returns module list', async () => {
     const user = await createUser({ userName: 'moduser', email: 'moduser@example.com' });
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    const res = await request(app)
+
+    const res = await request(BASE_URL)
       .get('/api/modules')
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
+
     expect(res.body.modules).toBeInstanceOf(Array);
     expect(res.body.modules.length).toBeGreaterThanOrEqual(1);
   });
@@ -52,11 +52,13 @@ describe('Modules — auth + quiz scoring', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    const res = await request(app)
+
+    const res = await request(BASE_URL)
       .post('/api/modules/mod_test_001/grade')
       .set('Authorization', `Bearer ${token}`)
       .send({ answers: [0, 0] })
       .expect(200);
+
     expect(res.body.quizScore).toBe(50);
     expect(res.body.passed).toBe(false);
   });
@@ -65,11 +67,13 @@ describe('Modules — auth + quiz scoring', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    const res = await request(app)
+
+    const res = await request(BASE_URL)
       .post('/api/modules/mod_test_001/grade')
       .set('Authorization', `Bearer ${token}`)
       .send({ answers: [0, 1] })
       .expect(200);
+
     expect(res.body.quizScore).toBe(100);
     expect(res.body.passed).toBe(true);
   });
