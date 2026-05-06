@@ -17,12 +17,11 @@ const {
   createModuleWithQuiz,
 } = require('./helpers');
 
-let app;
+const BASE_URL = process.env.TEST_BASE_URL || 'http://127.0.0.1:5000';
 
 describe('User data — quiz progress & certificates', () => {
   beforeAll(async () => {
     await connectDb();
-    app = require('../app');
   });
 
   afterAll(async () => {
@@ -36,7 +35,8 @@ describe('User data — quiz progress & certificates', () => {
   test('POST /api/user-data/:userID/quiz without auth returns 401', async () => {
     const user = await createUser();
     await createModuleWithQuiz();
-    await request(app)
+
+    await request(BASE_URL)
       .post(`/api/user-data/${user.userID}/quiz`)
       .send({ moduleID: 'mod_test_001', quizScore: 90 })
       .expect(401);
@@ -50,7 +50,8 @@ describe('User data — quiz progress & certificates', () => {
     });
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    await request(app)
+
+    await request(BASE_URL)
       .post(`/api/user-data/${other.userID}/quiz`)
       .set('Authorization', `Bearer ${token}`)
       .send({ moduleID: 'mod_test_001', quizScore: 90 })
@@ -61,11 +62,13 @@ describe('User data — quiz progress & certificates', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    const res = await request(app)
+
+    const res = await request(BASE_URL)
       .post(`/api/user-data/${user.userID}/quiz`)
       .set('Authorization', `Bearer ${token}`)
       .send({ moduleID: 'mod_test_001', quizScore: 85 })
       .expect(200);
+
     expect(res.body.passed).toBe(true);
     expect(res.body.certificateIssued).toBe(true);
     expect(res.body.score).toBe(85);
@@ -77,16 +80,18 @@ describe('User data — quiz progress & certificates', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    await request(app)
+
+    await request(BASE_URL)
       .post(`/api/user-data/${user.userID}/quiz`)
       .set('Authorization', `Bearer ${token}`)
       .send({ moduleID: 'mod_test_001', quizScore: 85 })
       .expect(200);
 
-    const res = await request(app)
+    const res = await request(BASE_URL)
       .get(`/api/user-data/${user.userID}/certificates`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
+
     expect(res.body.certificates.length).toBeGreaterThanOrEqual(1);
   });
 
@@ -94,16 +99,18 @@ describe('User data — quiz progress & certificates', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    await request(app)
+
+    await request(BASE_URL)
       .post(`/api/user-data/${user.userID}/quiz`)
       .set('Authorization', `Bearer ${token}`)
       .send({ moduleID: 'mod_test_001', quizScore: 85 })
       .expect(200);
 
-    const res = await request(app)
+    const res = await request(BASE_URL)
       .get(`/api/user-data/${user.userID}/certificates/mod_test_001`)
       .set('Authorization', `Bearer ${token}`)
       .expect(200);
+
     expect(res.body.earned).toBe(true);
     expect(res.body.moduleID).toBe('mod_test_001');
   });
@@ -112,9 +119,11 @@ describe('User data — quiz progress & certificates', () => {
     const user = await createUser();
     await createModuleWithQuiz();
     const token = bearerToken(user);
-    await request(app)
+
+    await request(BASE_URL)
       .get(`/api/user-data/${user.userID}/certificates/mod_test_001`)
       .set('Authorization', `Bearer ${token}`)
       .expect(403);
   });
+});
 });
