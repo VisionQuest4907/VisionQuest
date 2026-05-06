@@ -40,7 +40,12 @@ describe('auth logout (PRDM4)', () => {
     });
     expect(login.status).toBe(200);
 
-    const out = await request(BASE_URL).post('/api/auth/logout');
+    const loginCookie = login.headers['set-cookie'] || [];
+    expect(loginCookie.length).toBeGreaterThan(0);
+    
+    const out = await request(BASE_URL)
+      .post('/api/auth/logout')
+      .set('Cookie', loginCookie);
     expect(out.status).toBe(200);
     expect(String(out.body.message).toLowerCase()).toContain('logged out');
 
